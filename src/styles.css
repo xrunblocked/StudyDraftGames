@@ -147,8 +147,8 @@ textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 108px;
-  height: 56px;
+  width: 120px;
+  height: 58px;
   overflow: hidden;
   border-radius: 6px;
   text-decoration: none;
@@ -456,42 +456,56 @@ textarea {
 .media-frame {
   position: relative;
   width: 100%;
-  min-height: 300px;
+  min-height: 310px;
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--border-strong);
-  background-color: var(--bg-inset);
+  background: radial-gradient(circle at center, #182235 0%, #070b13 100%);
   cursor: pointer;
+}
+
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(28px) saturate(1.35) brightness(0.5);
+  transform: scale(1.2);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 400ms var(--ease-out);
 }
 
 @keyframes heroKenBurns {
   from {
-    transform: scale(1);
+    transform: scale(0.985);
   }
   to {
-    transform: scale(1.06);
+    transform: scale(1.015);
   }
 }
 
 @keyframes heroImageIn {
   0% {
     opacity: 0;
-    transform: scale(1.09) translateX(14px);
+    transform: scale(0.93) translateX(16px);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateX(0);
+    transform: scale(0.985) translateX(0);
   }
 }
 
 @keyframes heroImageOut {
   0% {
     opacity: 1;
-    transform: scale(1.02) translateX(0);
+    transform: scale(1) translateX(0);
   }
   100% {
     opacity: 0;
-    transform: scale(0.97) translateX(-14px);
+    transform: scale(0.94) translateX(-16px);
   }
 }
 
@@ -500,7 +514,9 @@ textarea {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  padding: 16px;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.55));
   will-change: transform, opacity;
 }
 
@@ -533,7 +549,7 @@ textarea {
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  background: linear-gradient(to top, rgba(9, 13, 22, 0.58) 0%, transparent 48%);
+  background: linear-gradient(to top, rgba(9, 13, 22, 0.36) 0%, transparent 40%);
 }
 
 /* Toolbar: Segmented Category Tabs + Search */
@@ -652,7 +668,7 @@ textarea {
   width: 100%;
   padding: 0;
   border: none;
-  background: var(--bg-inset);
+  background: radial-gradient(circle at center, #182235 0%, #070b13 100%);
   cursor: pointer;
   aspect-ratio: 4 / 3;
   overflow: hidden;
@@ -685,12 +701,13 @@ textarea {
 .card-thumb-btn img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  padding: 8px;
+  object-fit: contain;
   transition: transform 260ms var(--ease-out);
 }
 
 .game-card:hover .card-thumb-btn img {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
 .media-fallback {

@@ -64,6 +64,7 @@ const els = {
   heroTitle: /** @type {HTMLElement} */ (document.getElementById('heroTitle')),
   heroDescription: /** @type {HTMLElement} */ (document.getElementById('heroDescription')),
   heroImage: /** @type {HTMLImageElement} */ (document.getElementById('heroImage')),
+  heroBackdrop: /** @type {HTMLImageElement | null} */ (document.getElementById('heroBackdrop')),
   heroImageOutgoing: /** @type {HTMLImageElement | null} */ (document.getElementById('heroImageOutgoing')),
   heroMediaFrame: /** @type {HTMLElement} */ (document.getElementById('heroMediaFrame')),
   heroCarouselBar: /** @type {HTMLElement | null} */ (document.getElementById('heroCarouselBar')),
@@ -284,16 +285,22 @@ function showFeaturedAt(targetIndex, animate = true) {
     els.heroImage.classList.remove('is-entering');
     els.heroImage.src = featured.thumbnail;
     els.heroImage.alt = `${featured.title} preview`;
+    if (els.heroBackdrop) {
+      els.heroBackdrop.hidden = false;
+      els.heroBackdrop.src = featured.thumbnail;
+    }
     if (animate) {
       void els.heroImage.offsetWidth;
       els.heroImage.classList.add('is-entering');
     }
     els.heroImage.onerror = () => {
       els.heroImage.hidden = true;
+      if (els.heroBackdrop) els.heroBackdrop.hidden = true;
       fallback.hidden = false;
     };
   } else {
     els.heroImage.hidden = true;
+    if (els.heroBackdrop) els.heroBackdrop.hidden = true;
     fallback.hidden = false;
   }
 
