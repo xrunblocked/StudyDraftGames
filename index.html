@@ -22,9 +22,14 @@
       rel="stylesheet"
     />
     <link
+      id="appFavicon"
       rel="icon"
-      type="image/svg+xml"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2310b981'/><text x='16' y='22' font-family='sans-serif' font-size='18' font-weight='bold' text-anchor='middle' fill='%23052e22'>S</text></svg>"
+      type="image/png"
+      href="./assets/aistudio/STUDY_DRAFT__1__69f40c81.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="./assets/aistudio/STUDY_DRAFT__1__69f40c81.png"
     />
     <link rel="stylesheet" href="./src/styles.css" />
   </head>
@@ -33,7 +38,17 @@
       <!-- Top Bar (3-zone contract: Brand Wordmark | 5 Single-Line Nav Links | 1 Primary CTA) -->
       <header class="topbar">
         <div class="container topbar-inner">
-          <a href="#catalog" class="brand-wordmark" id="brandHomeLink">StudyDraft</a>
+          <a href="#catalog" class="brand-wordmark" id="brandHomeLink">
+            <img
+              id="brandLogoImg"
+              class="brand-logo"
+              src="./assets/aistudio/STUDY_DRAFT_2f72f02d.png"
+              alt="StudyDraft"
+              width="116"
+              height="116"
+            />
+            <span class="sr-only">StudyDraft</span>
+          </a>
 
           <nav class="topbar-nav" aria-label="Primary Navigation">
             <a href="#all" class="nav-link active" data-nav-filter="all">All Games</a>
@@ -77,6 +92,7 @@
                 <div class="media-fallback" hidden>
                   <span class="fallback-title">Geometry Dash</span>
                 </div>
+                <div class="hero-scrim" aria-hidden="true"></div>
               </div>
             </div>
           </section>

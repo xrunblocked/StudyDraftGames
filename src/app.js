@@ -70,6 +70,8 @@ const els = {
   reloadFrameBtn: /** @type {HTMLButtonElement} */ (document.getElementById('reloadFrameBtn')),
   theaterToggleBtn: /** @type {HTMLButtonElement} */ (document.getElementById('theaterToggleBtn')),
   fullscreenBtn: /** @type {HTMLButtonElement} */ (document.getElementById('fullscreenBtn')),
+  brandLogoImg: /** @type {HTMLImageElement | null} */ (document.getElementById('brandLogoImg')),
+  appFavicon: /** @type {HTMLLinkElement | null} */ (document.getElementById('appFavicon')),
 };
 
 function loadLocalData() {
@@ -500,7 +502,31 @@ function bindEvents() {
   });
 }
 
+function bindLogoFallback() {
+  if (!els.brandLogoImg) return;
+  const applyFallback = () => {
+    const logoFallback = './public/assets/aistudio/STUDY_DRAFT_2f72f02d.png';
+    const iconFallback = './public/assets/aistudio/STUDY_DRAFT__1__69f40c81.png';
+    if (els.brandLogoImg && !els.brandLogoImg.src.includes('/public/')) {
+      els.brandLogoImg.src = logoFallback;
+    }
+    if (els.appFavicon) {
+      els.appFavicon.href = iconFallback;
+    }
+    document.querySelectorAll('link[rel="apple-touch-icon"]').forEach((link) => {
+      link.setAttribute('href', iconFallback);
+    });
+  };
+
+  if (els.brandLogoImg.complete && els.brandLogoImg.naturalWidth === 0) {
+    applyFallback();
+  } else {
+    els.brandLogoImg.addEventListener('error', applyFallback, { once: true });
+  }
+}
+
 function init() {
+  bindLogoFallback();
   loadLocalData();
   bindEvents();
   fetchGamesCatalog();
