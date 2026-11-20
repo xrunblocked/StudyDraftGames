@@ -22,7 +22,7 @@ const STORAGE_FAVORITES_KEY = 'studydraft_favorites_v1';
  */
 
 const PAGE_SIZE = 48;
-const FEATURED_ROTATE_MS = 7000;
+const FEATURED_ROTATE_MS = 4000;
 
 const state = {
   /** @type {GameEntry[]} */

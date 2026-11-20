@@ -410,7 +410,7 @@ textarea {
   border-radius: 999px;
   background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
   transform-origin: left center;
-  animation: heroDotProgress var(--hero-duration, 7000ms) linear forwards;
+  animation: heroDotProgress var(--hero-duration, 4000ms) linear forwards;
 }
 
 .hero-section.is-paused .hero-dot.is-active::after {
