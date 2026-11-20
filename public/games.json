@@ -591,7 +591,7 @@
     "description": "Play Minecraft directly in your browser.",
     "controls": "Keyboard / Mouse",
     "thumbnail": "https://gloverschool.org/stuff/games/minecraft.jpg",
-    "featured": false,
+    "featured": true,
     "iframe": {
       "src": "https://gloverschool.org/stuff/selfhosted/minecraft/",
       "title": "Minecraft",
@@ -636,7 +636,7 @@
     "description": "Play Subway Surfers directly in your browser.",
     "controls": "Keyboard / Mouse",
     "thumbnail": "https://gloverschool.org/stuff/games/subway.png",
-    "featured": false,
+    "featured": true,
     "iframe": {
       "src": "https://gloverschool.org/cdn/projects/subway-surfers/",
       "title": "Subway Surfers",
@@ -906,7 +906,7 @@
     "description": "Play Polytrack directly in your browser.",
     "controls": "Keyboard / Mouse",
     "thumbnail": "https://gloverschool.org/stuff/games/polytrack.jpg",
-    "featured": false,
+    "featured": true,
     "iframe": {
       "src": "https://gloverschool.org/stuff/selfhosted/polytrack",
       "title": "Polytrack",
@@ -951,7 +951,7 @@
     "description": "Play Slope directly in your browser.",
     "controls": "Keyboard / Mouse",
     "thumbnail": "https://gloverschool.org/stuff/games/slope.jpg",
-    "featured": false,
+    "featured": true,
     "iframe": {
       "src": "https://gloverschool.org/stuff/selfhosted/slope",
       "title": "Slope",
@@ -1131,7 +1131,7 @@
     "description": "Play Drive Mad directly in your browser.",
     "controls": "Keyboard / Mouse",
     "thumbnail": "https://gloverschool.org/stuff/games/drive-mad.png",
-    "featured": false,
+    "featured": true,
     "iframe": {
       "src": "https://gloverschool.org/cdn/projects/drive-mad/",
       "title": "Drive Mad",
@@ -2526,7 +2526,7 @@
     "description": "Play Run 3 directly in your browser.",
     "controls": "Keyboard / Mouse",
     "thumbnail": "https://gloverschool.org/stuff/games/run3.png",
-    "featured": false,
+    "featured": true,
     "iframe": {
       "src": "https://gloverschool.org/stuff/selfhosted/run3/",
       "title": "Run 3",
@@ -3021,7 +3021,7 @@
     "description": "Play Retro Bowl directly in your browser.",
     "controls": "Keyboard / Mouse",
     "thumbnail": "https://gloverschool.org/stuff/games/retrobowl.png",
-    "featured": false,
+    "featured": true,
     "iframe": {
       "src": "https://gloverschool.org/stuff/selfhosted/retro-bowl/",
       "title": "Retro Bowl",

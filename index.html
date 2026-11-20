@@ -68,23 +68,80 @@
         <!-- Catalog View -->
         <section id="catalogView" class="container">
           <!-- Featured Hero Split -->
-          <section class="hero-section" aria-label="Featured Game">
+          <section class="hero-section" id="heroSection" aria-label="Featured Game">
             <div class="hero-copy">
-              <p class="hero-kicker" id="heroKicker">Featured Game · Arcade · Keyboard / Mouse</p>
-              <h1 class="hero-title" id="heroTitle">Geometry Dash</h1>
-              <p class="hero-description" id="heroDescription">
-                Play Geometry Dash directly in your browser.
-              </p>
+              <div class="hero-copy-stage" id="heroCopyStage">
+                <p class="hero-kicker" id="heroKicker">Featured Game · Arcade · Keyboard / Mouse</p>
+                <h1 class="hero-title" id="heroTitle">Geometry Dash</h1>
+                <p class="hero-description" id="heroDescription">
+                  Play Geometry Dash directly in your browser.
+                </p>
+              </div>
               <div class="hero-actions">
                 <button type="button" class="btn-primary btn-lg" id="playFeaturedBtn">Play Featured</button>
                 <button type="button" class="btn-secondary btn-lg" id="randomGameBtn">Random Game</button>
               </div>
+              <div class="hero-carousel-bar" id="heroCarouselBar" hidden>
+                <div class="hero-dots" id="heroDots" role="tablist" aria-label="Featured Games"></div>
+                <div class="hero-nav-arrows">
+                  <button
+                    type="button"
+                    class="hero-nav-btn"
+                    id="heroPrevBtn"
+                    aria-label="Previous featured game"
+                    title="Previous featured game"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path
+                        d="M10 3.5L5.5 8L10 12.5"
+                        stroke="currentColor"
+                        stroke-width="1.75"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    class="hero-nav-btn"
+                    id="heroNextBtn"
+                    aria-label="Next featured game"
+                    title="Next featured game"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path
+                        d="M6 3.5L10.5 8L6 12.5"
+                        stroke="currentColor"
+                        stroke-width="1.75"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div class="hero-media">
-              <div class="media-frame" id="heroMediaFrame">
+              <div
+                class="media-frame"
+                id="heroMediaFrame"
+                role="button"
+                tabindex="0"
+                aria-label="Play featured game"
+              >
+                <img
+                  id="heroImageOutgoing"
+                  class="hero-img-layer is-outgoing"
+                  src=""
+                  alt=""
+                  aria-hidden="true"
+                  referrerpolicy="no-referrer"
+                  hidden
+                />
                 <img
                   id="heroImage"
+                  class="hero-img-layer is-current"
                   src="https://gloverschool.org/stuff/games/geodash.png"
                   alt="Geometry Dash featured game preview"
                   referrerpolicy="no-referrer"
