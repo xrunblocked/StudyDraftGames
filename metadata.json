@@ -1,0 +1,6 @@
+{
+  "name": "Recess Arcade",
+  "description": "An unblocked browser games library powered by a JSON catalog of playable iframe games.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

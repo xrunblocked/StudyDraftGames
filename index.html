@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudyDraft — Browser Games Library</title>
+    <meta
+      name="description"
+      content="StudyDraft — browser games library."
+    />
+    <meta property="og:title" content="StudyDraft — Browser Games Library" />
+    <meta
+      property="og:description"
+      content="StudyDraft — browser games library."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2310b981'/><text x='16' y='22' font-family='sans-serif' font-size='18' font-weight='bold' text-anchor='middle' fill='%23052e22'>S</text></svg>"
+    />
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <div id="app" class="app-shell">
+      <!-- Top Bar (3-zone contract: Brand Wordmark | 5 Single-Line Nav Links | 1 Primary CTA) -->
+      <header class="topbar">
+        <div class="container topbar-inner">
+          <a href="#catalog" class="brand-wordmark" id="brandHomeLink">StudyDraft</a>
+
+          <nav class="topbar-nav" aria-label="Primary Navigation">
+            <a href="#all" class="nav-link active" data-nav-filter="all">All Games</a>
+            <a href="#action" class="nav-link" data-nav-filter="Action">Action</a>
+            <a href="#sports" class="nav-link" data-nav-filter="Sports">Sports</a>
+            <a href="#arcade" class="nav-link" data-nav-filter="Arcade">Arcade</a>
+            <a href="#favorites" class="nav-link" data-nav-filter="Favorites">Favorites</a>
+          </nav>
+
+          <div class="topbar-actions">
+            <button type="button" class="btn-primary" id="topbarRandomBtn">Random Game</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <!-- Catalog View -->
+        <section id="catalogView" class="container">
+          <!-- Featured Hero Split -->
+          <section class="hero-section" aria-label="Featured Game">
+            <div class="hero-copy">
+              <p class="hero-kicker" id="heroKicker">Featured Game · Arcade · Keyboard / Mouse</p>
+              <h1 class="hero-title" id="heroTitle">Geometry Dash</h1>
+              <p class="hero-description" id="heroDescription">
+                Play Geometry Dash directly in your browser.
+              </p>
+              <div class="hero-actions">
+                <button type="button" class="btn-primary btn-lg" id="playFeaturedBtn">Play Featured</button>
+                <button type="button" class="btn-secondary btn-lg" id="randomGameBtn">Random Game</button>
+              </div>
+            </div>
+
+            <div class="hero-media">
+              <div class="media-frame" id="heroMediaFrame">
+                <img
+                  id="heroImage"
+                  src="https://gloverschool.org/stuff/games/geodash.png"
+                  alt="Geometry Dash featured game preview"
+                  referrerpolicy="no-referrer"
+                />
+                <div class="media-fallback" hidden>
+                  <span class="fallback-title">Geometry Dash</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Search & Category Filter Toolbar -->
+          <section class="toolbar" id="catalog" aria-label="Filter Games">
+            <div class="category-tabs" role="tablist" aria-label="Game Categories">
+              <button type="button" class="tab-btn active" role="tab" aria-selected="true" data-category="all">
+                All Games
+              </button>
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" data-category="Action">
+                Action
+              </button>
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" data-category="Sports">
+                Sports
+              </button>
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" data-category="Driving">
+                Driving
+              </button>
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" data-category="Arcade">
+                Arcade
+              </button>
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" data-category="Puzzle">
+                Puzzle
+              </button>
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" data-category="Favorites">
+                Favorites
+              </button>
+            </div>
+
+            <div class="search-wrap">
+              <label for="gameSearchInput" class="sr-only">Search games</label>
+              <input
+                type="search"
+                id="gameSearchInput"
+                class="search-input"
+                placeholder="Search games..."
+                autocomplete="off"
+              />
+              <span class="result-count" id="resultCount">818 games</span>
+            </div>
+          </section>
+
+          <!-- Games Grid -->
+          <section aria-label="Game Library">
+            <div id="gamesGrid" class="games-grid"></div>
+            <div id="paginationBar" class="pagination-bar" hidden>
+              <span class="pagination-info" id="paginationInfo">Showing 48 of 818</span>
+              <div class="pagination-actions">
+                <button type="button" class="btn-secondary" id="loadMoreBtn">Load 48 More</button>
+                <button type="button" class="btn-secondary" id="showAllBtn">Show All</button>
+              </div>
+            </div>
+            <div id="emptyState" class="empty-state" hidden>
+              <h2 class="empty-title">No matching games found</h2>
+              <p class="empty-copy">Try clearing your search filter or switching back to all categories.</p>
+              <button type="button" class="btn-secondary" id="resetFiltersBtn">Show All Games</button>
+            </div>
+            <div id="errorState" class="empty-state" hidden>
+              <h2 class="empty-title">Could not load game catalog</h2>
+              <p class="empty-copy" id="errorMessage">Please try reloading the game library.</p>
+              <button type="button" class="btn-secondary" id="retryLoadBtn">Retry</button>
+            </div>
+          </section>
+        </section>
+
+        <!-- Theater / Iframe Player View -->
+        <section id="playerView" class="container player-view" hidden aria-label="Game Player">
+          <div class="player-bar">
+            <div class="player-bar-left">
+              <button type="button" class="btn-secondary" id="backToLibraryBtn">Back to Library</button>
+              <div class="player-heading">
+                <h1 class="player-title" id="playerTitle">Game Title</h1>
+                <p class="player-meta" id="playerMeta">Arcade · Keyboard / Mouse</p>
+              </div>
+            </div>
+
+            <div class="player-controls">
+              <button type="button" class="btn-secondary" id="playerFavoriteBtn">Favorite</button>
+              <button type="button" class="btn-secondary" id="reloadFrameBtn">Reload</button>
+              <button type="button" class="btn-secondary" id="theaterToggleBtn">Wide View</button>
+              <button type="button" class="btn-primary" id="fullscreenBtn">Fullscreen</button>
+            </div>
+          </div>
+
+          <div class="iframe-stage" id="iframeStage">
+            <!-- Iframe is injected dynamically -->
+          </div>
+
+          <div class="player-details">
+            <div class="player-about">
+              <h2 class="section-subtitle">How to Play</h2>
+              <p class="player-description" id="playerDescription"></p>
+            </div>
+            <div class="player-controls-box">
+              <h2 class="section-subtitle">Controls</h2>
+              <p class="player-controls-text" id="playerControlsText"></p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Clean Quiet Footer -->
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <p class="footer-copy">StudyDraft</p>
+        </div>
+      </footer>
+    </div>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
