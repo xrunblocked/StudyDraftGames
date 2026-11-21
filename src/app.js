@@ -43,6 +43,7 @@ const state = {
   /** @type {GameEntry | null} */
   currentGame: null,
   theaterWide: false,
+  screenHidden: false,
 };
 
 const els = {
@@ -73,7 +74,8 @@ const els = {
   heroNextBtn: /** @type {HTMLButtonElement | null} */ (document.getElementById('heroNextBtn')),
   playFeaturedBtn: /** @type {HTMLButtonElement} */ (document.getElementById('playFeaturedBtn')),
   randomGameBtn: /** @type {HTMLButtonElement} */ (document.getElementById('randomGameBtn')),
-  topbarRandomBtn: /** @type {HTMLButtonElement} */ (document.getElementById('topbarRandomBtn')),
+  topbarHideBtn: /** @type {HTMLButtonElement | null} */ (document.getElementById('topbarHideBtn')),
+  hideOverlay: /** @type {HTMLElement | null} */ (document.getElementById('hideOverlay')),
   resetFiltersBtn: /** @type {HTMLButtonElement} */ (document.getElementById('resetFiltersBtn')),
   retryLoadBtn: /** @type {HTMLButtonElement} */ (document.getElementById('retryLoadBtn')),
   brandHomeLink: /** @type {HTMLAnchorElement} */ (document.getElementById('brandHomeLink')),
@@ -642,7 +644,53 @@ function bindEvents() {
   }
 
   els.randomGameBtn.addEventListener('click', launchRandomGame);
-  els.topbarRandomBtn.addEventListener('click', launchRandomGame);
+
+  /**
+   * @param {boolean} [forceState]
+   */
+  function toggleScreenHide(forceState) {
+    const next = typeof forceState === 'boolean' ? forceState : !state.screenHidden;
+    state.screenHidden = next;
+    document.body.classList.toggle('is-screen-hidden', next);
+    if (els.hideOverlay) {
+      els.hideOverlay.hidden = !next;
+      if (next) {
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur();
+        }
+        els.hideOverlay.focus({ preventScroll: true });
+      }
+    }
+    if (els.topbarHideBtn) {
+      els.topbarHideBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+    }
+    setHeroPaused(next);
+  }
+
+  if (els.topbarHideBtn) {
+    els.topbarHideBtn.addEventListener('click', () => toggleScreenHide(true));
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key.toLowerCase() !== 'h') return;
+
+    if (!state.screenHidden) {
+      const target = e.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.tagName === 'SELECT' ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+    }
+
+    e.preventDefault();
+    toggleScreenHide();
+  });
 
   // Player controls
   els.backToLibraryBtn.addEventListener('click', closeGamePlayer);
@@ -729,7 +777,144 @@ function bindLogoFallback() {
   }
 }
 
+function initBackgroundParticles() {
+  const canvas = /** @type {HTMLCanvasElement | null} */ (document.getElementById('bgParticlesCanvas'));
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  /** @typedef {{ x: number, y: number, r: number, opacity: number, vx: number, vy: number }} BgParticle */
+
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  /** @type {BgParticle[]} */
+  let particles = [];
+  let rafId = 0;
+  let lastTime = 0;
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /**
+   * @param {boolean} randomPos
+   * @returns {BgParticle}
+   */
+  function createParticle(randomPos) {
+    const speedFactor = 0.75 + Math.random() * 0.7;
+    const baseSpeed = 145 * speedFactor;
+    return {
+      x: randomPos ? Math.random() * width : -10 - Math.random() * width * 0.15,
+      y: randomPos ? Math.random() * height : -10 - Math.random() * height * 0.15,
+      r: 0.7 + Math.random() * 2.3,
+      opacity: 0.18 + Math.random() * 0.82,
+      vx: baseSpeed * (0.55 + Math.random() * 0.55),
+      vy: baseSpeed * (0.55 + Math.random() * 0.55),
+    };
+  }
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const targetCount = Math.min(200, Math.max(55, Math.round(((width * height) / (800 * 800)) * 100)));
+    if (particles.length === 0) {
+      particles = Array.from({ length: targetCount }, () => createParticle(true));
+    } else if (particles.length < targetCount) {
+      while (particles.length < targetCount) {
+        particles.push(createParticle(true));
+      }
+    } else if (particles.length > targetCount) {
+      particles.length = targetCount;
+    }
+  }
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, width, height);
+    for (let i = 0; i < particles.length; i += 1) {
+      const p = particles[i];
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  /**
+   * @param {number} now
+   */
+  function tick(now) {
+    if (!lastTime) lastTime = now;
+    const dt = Math.min(0.05, (now - lastTime) / 1000);
+    lastTime = now;
+
+    for (let i = 0; i < particles.length; i += 1) {
+      const p = particles[i];
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+
+      if (p.x - p.r > width) {
+        p.x = -p.r;
+      } else if (p.x + p.r < 0) {
+        p.x = width + p.r;
+      }
+
+      if (p.y - p.r > height) {
+        p.y = -p.r;
+      } else if (p.y + p.r < 0) {
+        p.y = height + p.r;
+      }
+    }
+
+    drawFrame();
+    if (!document.hidden && !reducedMotionQuery.matches) {
+      rafId = window.requestAnimationFrame(tick);
+    } else {
+      rafId = 0;
+    }
+  }
+
+  function startLoop() {
+    if (rafId) {
+      window.cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+    if (reducedMotionQuery.matches) {
+      drawFrame();
+      return;
+    }
+    if (!document.hidden) {
+      lastTime = 0;
+      rafId = window.requestAnimationFrame(tick);
+    }
+  }
+
+  resize();
+  startLoop();
+
+  window.addEventListener('resize', () => {
+    resize();
+    if (reducedMotionQuery.matches) drawFrame();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
+    } else {
+      startLoop();
+    }
+  });
+
+  reducedMotionQuery.addEventListener('change', startLoop);
+}
+
 function init() {
+  initBackgroundParticles();
   bindLogoFallback();
   loadLocalData();
   bindEvents();
