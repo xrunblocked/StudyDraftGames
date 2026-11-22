@@ -138,19 +138,35 @@ function toggleFavorite(id) {
   }
 }
 
+/**
+ * @param {string} url
+ * @returns {Promise<GameEntry[] | null>}
+ */
+async function tryFetchCatalogJson(url) {
+  try {
+    const response = await fetch(url, { cache: 'no-store' });
+    if (!response.ok) return null;
+    const text = (await response.text()).trim();
+    if (!text || text.startsWith('<')) return null;
+    const parsed = JSON.parse(text);
+    return Array.isArray(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
 async function fetchGamesCatalog() {
   els.errorState.hidden = true;
   try {
-    let response = await fetch('./games.json', { cache: 'no-store' });
-    if (!response.ok) {
-      response = await fetch('./public/games.json', { cache: 'no-store' });
+    /** @type {GameEntry[] | null} */
+    let data = null;
+    const candidates = ['./games.json', './public/games.json'];
+    for (const url of candidates) {
+      data = await tryFetchCatalogJson(url);
+      if (data) break;
     }
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status} while loading games catalog`);
-    }
-    const data = await response.json();
-    if (!Array.isArray(data)) {
-      throw new Error('games.json must contain a JSON array of game entries.');
+    if (!data) {
+      throw new Error('Could not find a valid games.json catalog file.');
     }
     state.baseGames = data.filter((entry) => entry && entry.id && entry.title && entry.iframe && entry.iframe.src);
     updateFeaturedHero();
